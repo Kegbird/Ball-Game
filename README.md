@@ -1,5 +1,5 @@
 # Ball Game
-Ball Game is a very simple game where you have to control a ball.
+Ball Game is a very simple game where you control a ball.
 
 # Controls
 
