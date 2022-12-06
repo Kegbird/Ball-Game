@@ -32,6 +32,8 @@ namespace Managers
         private GameObject m_end_boundary;
         [SerializeField]
         private GameObject m_victory;
+        [SerializeField]
+        private bool m_generate_map_procedurally;
 
         private void Awake()
         {
@@ -81,7 +83,8 @@ namespace Managers
                 }
             }
 
-            RandomizeMapCurve();
+            if(m_generate_map_procedurally)
+                RandomizeMapCurve();
 
             float step = 1.0f/m_map_width;
             float curve_value;

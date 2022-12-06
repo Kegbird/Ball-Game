@@ -10,7 +10,10 @@ namespace Interfaces
     {
         public void ShowBlackScreen();
         public void HideBlackScreen();
-        public void ShowVictoryText();
+        public void ShowEndText(string text);
         public void HideObjectiveText();
+        public void UpdateTimerText(float time);
+        public void HideTimerText();
+        public void ShowTimerText(float time);
     }
 }

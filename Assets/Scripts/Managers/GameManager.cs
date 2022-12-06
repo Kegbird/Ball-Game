@@ -16,6 +16,10 @@ namespace Player
         private IPlayerAudioInterface m_player_audio_interface;
         [SerializeField]
         private bool m_win;
+        [SerializeField]
+        private bool m_gameover;
+        [SerializeField]
+        private float m_timer;
 
         private void Awake()
         {
@@ -40,6 +44,26 @@ namespace Player
                 m_ui_manager_interface.HideObjectiveText();
             }
             StartCoroutine(Intro());
+            StartCoroutine(Timer());
+        }
+
+        private IEnumerator Timer()
+        {
+            m_ui_manager_interface.ShowTimerText(m_timer);
+            float time = m_timer;
+            while(time>0)
+            {
+                yield return new WaitForSeconds(1f);
+                time--;
+                m_ui_manager_interface.UpdateTimerText(time);
+            }
+
+            if (!m_win)
+            {
+                m_ui_manager_interface.ShowEndText("You lose!");
+                m_gameover = true;
+                StartCoroutine(EndGame());
+            }
         }
 
         public static IGameManagerInterface GetInstance()
@@ -51,19 +75,23 @@ namespace Player
         {
             if (m_win)
                 return;
+            else if (m_gameover)
+                return;
+
             m_win = true;
 
-            IEnumerator EndGame()
-            {
-                m_ui_manager_interface.ShowVictoryText();
-                m_player_audio_interface.PlaySound(SoundEnum.VICTORY);
-                yield return new WaitForSeconds(5f);
-                m_ui_manager_interface.ShowBlackScreen();
-                yield return new WaitForSeconds(2f);
-                Application.Quit();
-            }
-
+            StopAllCoroutines();
+            m_ui_manager_interface.ShowEndText("You win!");
+            m_player_audio_interface.PlaySound(SoundEnum.VICTORY);
             StartCoroutine(EndGame());
+        }
+
+        IEnumerator EndGame()
+        {
+            yield return new WaitForSeconds(5f);
+            m_ui_manager_interface.ShowBlackScreen();
+            yield return new WaitForSeconds(2f);
+            Application.Quit();
         }
     }
 }

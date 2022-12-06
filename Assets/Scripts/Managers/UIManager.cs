@@ -11,9 +11,11 @@ public class UIManager : MonoBehaviour, IUIManagerInterface
     [SerializeField]
     private Image m_blackscreen;
     [SerializeField]
-    private TextMeshProUGUI m_victory_text;
+    private TextMeshProUGUI m_end_text;
     [SerializeField]
     private TextMeshProUGUI m_objective_text;
+    [SerializeField]
+    private TextMeshProUGUI m_timer_text;
 
     private void Awake()
     {
@@ -55,13 +57,30 @@ public class UIManager : MonoBehaviour, IUIManagerInterface
         StartCoroutine(HideBlackScreen());
     }
 
-    public void ShowVictoryText()
+    public void ShowEndText(string text)
     {
-        m_victory_text.gameObject.SetActive(true);
+        m_end_text.text = text;
+        m_end_text.gameObject.SetActive(true);
     }
 
     public void HideObjectiveText()
     {
         m_objective_text.gameObject.SetActive(false);
+    }
+
+    public void UpdateTimerText(float time)
+    {
+        m_timer_text.text = time.ToString();
+    }
+
+    public void HideTimerText()
+    {
+        m_timer_text.gameObject.SetActive(false);
+    }
+
+    public void ShowTimerText(float time)
+    {
+        UpdateTimerText(time);
+        m_timer_text.gameObject.SetActive(true);
     }
 }
